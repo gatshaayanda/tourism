@@ -5,20 +5,20 @@ import PwaRegister from "@/app/pwa-register";
 import "./globals.css";
 import "./pwa.css";
 
-const siteUrl = process.env.NEXT_PUBLIC_BASE_URL || "https://africhiko.vercel.app";
+const siteUrl = process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000";
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
-  title: { default: "Africhiko | Welding & Steel Fabrication", template: "%s | Africhiko" },
-  description: "Africhiko — welding and steel fabrication in Botswana. Browse services and submit a project brief for review and quotation.",
-  applicationName: "Africhiko",
-  keywords: ["Africhiko", "Botswana steel fabrication", "welding", "gates", "steel structures"],
+  title: { default: "Facilities Management Botswana", template: "%s | Facilities" },
+  description: "Facilities Management Botswana supports commercial properties, offices, schools, retail sites and hospitality facilities with maintenance and site care.",
+  applicationName: "Facilities",
+  keywords: ["Facilities", "Botswana facilities management", "property maintenance", "commercial cleaning", "building systems"],
   alternates: { canonical: "/" },
-  openGraph: { type: "website", url: siteUrl, siteName: "Africhiko", title: "Africhiko | Welding & Steel Fabrication", description: "Welding and steel fabrication in Botswana. Tell us about your project and request a quotation." },
-  twitter: { card: "summary", title: "Africhiko | Welding & Steel Fabrication", description: "Welding and steel fabrication in Botswana. Tell us about your project and request a quotation." },
+  openGraph: { type: "website", url: siteUrl, siteName: "Facilities", title: "Facilities Management Botswana", description: "Facilities maintenance in Botswana. Request service support for your property." },
+  twitter: { card: "summary", title: "Facilities Management Botswana", description: "Facilities maintenance in Botswana. Request service support for your property." },
   icons: { icon: "/africhiko-icon.svg", apple: "/africhiko-icon.svg" },
   manifest: "/manifest.webmanifest",
-  appleWebApp: { capable: true, title: "Africhiko", statusBarStyle: "default" },
+  appleWebApp: { capable: true, title: "Facilities", statusBarStyle: "default" },
 };
 
 export const viewport: Viewport = { themeColor: "#6d28d9", colorScheme: "light" };
