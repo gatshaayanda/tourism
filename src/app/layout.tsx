@@ -15,7 +15,7 @@ export const metadata: Metadata = {
   keywords: ["Botswana safari", "Okavango Delta", "Chobe", "Moremi", "safari lodge", "mobile safari", "guided game drives"],
   alternates: { canonical: "/" },
   openGraph: { type: "website", url: siteUrl, siteName: "Botswana Safari Experiences", title: "Botswana Safari Experiences", description: "Discover safari stays, guided wildlife experiences and journeys across Botswana." },
-  twitter: { card: "summary", title: "Botswana Safari Experiences", description: "Facilities maintenance in Botswana. Request service support for your property." },
+  twitter: { card: "summary", title: "Botswana Safari Experiences", description: "Discover safari stays, guided wildlife experiences and journeys across Botswana." },
   icons: { icon: "/icon.svg", apple: "/icon.svg" },
   manifest: "/manifest.webmanifest",
   appleWebApp: { capable: true, title: "Safari Experiences", statusBarStyle: "default" },

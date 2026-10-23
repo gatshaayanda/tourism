@@ -1,15 +1,15 @@
 # Botswana Safari Experiences
 
-Facilities Management Botswana is a customer-first safari experiences PWA for commercial properties, offices, schools, retail sites and hospitality facilities in Botswana.
+Botswana Safari Experiences is a premium safari discovery and enquiry PWA for independent safari operators, boutique lodges, luxury camps and mobile safari companies across Botswana.
 
 ## Customer journey
 
 1. Browse safari stays, guided game drives, mobile safaris and nature or cultural experiences.
-2. Add services to one trip request, or describe a property maintenance issue.
+2. Add experiences to one trip request, or describe the kind of journey you are looking for.
 3. Submit contact details, preferred destination, travel dates, group size, accommodation preferences and notes for review.
 4. After submission, create a customer account to keep enquiries associated with the same Firebase identity, or continue as a guest.
 
-A trip request is not a confirmed booking. The facilities team reviews the details before arranging work.
+A trip request is not a confirmed booking. The tourism operator reviews availability, pricing and itinerary details before confirming anything.
 
 ## Customer account
 
@@ -23,13 +23,13 @@ The account page supports email/password sign-in and account creation. When a gu
 
 ## Operations
 
-The `/admin` route is the staff surface for reviewing trip requests, managing maintenance services, publishing landing-page updates and maintaining completed-work examples. It depends on the tourism Firebase project configuration and the project's configured staff authorization.
+The `/admin` route is the staff surface for reviewing trip enquiries, managing safari experiences, publishing landing-page updates and maintaining featured listings. It depends on the tourism Firebase project configuration and the project's configured staff authorization.
 
 ## Stack
 
 - Next.js 15 / React 19 / TypeScript
 - Firebase Authentication and Cloud Firestore
-- UploadThing for service-request attachments and admin media uploads
+- UploadThing for trip-request attachments and admin media uploads
 - Progressive Web App support
 - Vercel Analytics and Speed Insights
 - Vercel deployment from GitHub `main`
