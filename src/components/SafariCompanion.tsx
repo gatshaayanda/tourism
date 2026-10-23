@@ -81,6 +81,9 @@ export default function SafariCompanion() {
     const timer = window.setInterval(() => setCooldownLeft(Math.max(0, Math.ceil((cooldownUntil - Date.now()) / 1000))), 500);
     return () => window.clearInterval(timer);
   }, [cooldownUntil]);
+  useEffect(() => {
+    if (cooldownUntil > 0 && cooldownLeft === 0) setReaction("idle");
+  }, [cooldownLeft, cooldownUntil]);
   function commit(next: CompanionState, feedback: string, pose = "happy") {
     setReaction(pose);
     const saved = { ...next, lastSeenAt: Date.now(), journal: [{ id: Date.now(), message: feedback }, ...next.journal].slice(0, 5) };
