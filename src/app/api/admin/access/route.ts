@@ -60,6 +60,6 @@ export async function POST(request: Request) {
   } catch (error) {
     const message = error instanceof Error ? error.message : "Admin access verification failed.";
     const status = /FIREBASE_ADMIN_KEY|service-account JSON/.test(message) ? 503 : /already has a non-admin/.test(message) ? 403 : 401;
-    return NextResponse.json({ error: status === 503 ? "Server admin credentials are missing or invalid. Configure FIREBASE_ADMIN_KEY." : status === 403 ? message : "Admin access could not be verified. Check the access word and try again." }, { status });
+    return NextResponse.json({ error: status === 503 ? "Server admin credentials are missing or invalid. Configure FIREBASE_ADMIN_KEY." : status === 403 ? message : "Admin access could not be verified. Check the admin password and try again." }, { status });
   }
 }
