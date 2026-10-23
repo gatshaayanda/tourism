@@ -30,7 +30,7 @@ function safeEqual(a: string, b: string) {
 
 export async function POST(request: Request) {
   try {
-    const configuredWord = process.env.AFRICHIKO_ADMIN_WORD;
+    const configuredWord = process.env.ADMIN_PASSWORD;
     if (!configuredWord) {
       return NextResponse.json({ error: "Admin access is not configured yet. Set AFRICHIKO_ADMIN_WORD in the server environment." }, { status: 503 });
     }
