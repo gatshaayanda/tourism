@@ -58,6 +58,10 @@ export default function SafariCompanion() {
   const [pet, setPet] = useState<CompanionState | null>(null);
   const [message, setMessage] = useState("");
   const [rename, setRename] = useState("");
+  const [reaction, setReaction] = useState("idle");
+  const [cooldownUntil, setCooldownUntil] = useState(0);
+  const [cooldownLeft, setCooldownLeft] = useState(0);
+  const [recentActions, setRecentActions] = useState(0);
   useEffect(() => {
     const now = Date.now();
     try {
@@ -73,7 +77,12 @@ export default function SafariCompanion() {
       setRename(next.name);
     }
   }, []);
-  function commit(next: CompanionState, feedback: string) {
+  useEffect(() => {
+    const timer = window.setInterval(() => setCooldownLeft(Math.max(0, Math.ceil((cooldownUntil - Date.now()) / 1000))), 500);
+    return () => window.clearInterval(timer);
+  }, [cooldownUntil]);
+  function commit(next: CompanionState, feedback: string, pose = "happy") {
+    setReaction(pose);
     const saved = { ...next, lastSeenAt: Date.now(), journal: [{ id: Date.now(), message: feedback }, ...next.journal].slice(0, 5) };
     setPet(saved);
     setMessage(feedback);
@@ -81,11 +90,55 @@ export default function SafariCompanion() {
   }
   function act(action: "feed" | "water" | "play" | "rest" | "explore") {
     if (!pet) return;
-    if (action === "feed") commit({ ...pet, hunger: clamp(pet.hunger - 32), trust: clamp(pet.trust + 3), visits: pet.visits + 1 }, "Pula enjoyed a handful of safari-safe treats and is feeling cared for.");
-    if (action === "water") commit({ ...pet, thirst: clamp(pet.thirst - 38), trust: clamp(pet.trust + 2), visits: pet.visits + 1 }, "Fresh water! Pula had a good drink at camp.");
-    if (action === "play") commit({ ...pet, energy: clamp(pet.energy - 16), trust: clamp(pet.trust + 10), hunger: clamp(pet.hunger + 5), visits: pet.visits + 1 }, "You played a little tracking game together. Pula trusts you a bit more.");
-    if (action === "rest") commit({ ...pet, energy: clamp(pet.energy + 28), thirst: clamp(pet.thirst + 3), visits: pet.visits + 1 }, "A quiet break in the shade. Pula is rested and ready to explore again.");
-    if (action === "explore") commit({ ...pet, energy: clamp(pet.energy - 12), hunger: clamp(pet.hunger + 4), sightings: pet.sightings + 1, worldDay: pet.worldDay + 1, visits: pet.visits + 1 }, "You followed fresh tracks together and added a new wildlife sighting to the camp journal.");
+    const now = Date.now();
+    if (now < cooldownUntil) {
+      setReaction("sleepy");
+      setMessage(`Pula has had enough excitement for a moment. Let your buddy have ${Math.ceil((cooldownUntil - now) / 1000)} seconds of quiet.`);
+      return;
+    }
+    if (action === "feed" && pet.hunger <= 8) {
+      setReaction("full");
+      setMessage(["Pula is already full and gently turns away from the treats.", "Tiny burp! No more snacks for now.", "Pula sniffs the treats, then gives a satisfied little bleat."][Math.floor(Math.random() * 3)]);
+      return;
+    }
+    if (action === "water" && pet.thirst <= 8) {
+      setReaction("content");
+      setMessage(["Pula has had plenty of water and noses the bowl aside.", "All hydrated! Pula gives the water bowl a curious sniff.", "Pula takes one polite lick, then wanders off."][Math.floor(Math.random() * 3)]);
+      return;
+    }
+    if ((action === "play" || action === "explore") && pet.energy < 18) {
+      setReaction("sleepy");
+      setMessage(["Pula's eyelids droop. A nap sounds much better than playing.", "Your buddy gives a tiny bleat, then flops down in the shade.", "Pula takes two sleepy steps and decides that's enough adventure."][Math.floor(Math.random() * 3)]);
+      return;
+    }
+    if (action === "rest" && pet.energy >= 94) {
+      setReaction("content");
+      setMessage("Pula is already well-rested and would rather watch the birds for a while.");
+      return;
+    }
+    const replies: Record<typeof action, string[]> = {
+      feed: ["Pula munches happily, then licks a crumb from their nose.", "A favourite little snack! Pula's ears perk right up.", "Crunch, crunch. Pula gives you a pleased nuzzle.", "Pula takes the treat gently and does a tiny happy hop."],
+      water: ["Pula drinks deeply, then flicks an ear at a nearby bird.", "A cool drink in the bush heat. Pula looks refreshed.", "Pula laps at the water and gives a contented little bleat.", "A few splashes later, Pula shakes their head dry."],
+      play: ["Pula bounces sideways, then invites you to try again.", "A playful head tilt turns into a tiny happy hop.", "Pula chases a drifting leaf and trots proudly back.", "You play hide-and-seek behind the acacia. Pula found you!"],
+      rest: ["Pula curls up in the shade and lets out a slow sigh.", "A peaceful pause. Pula's ears twitch at sounds in the grass.", "Pula settles into the warm sand and slowly recharges.", "A little doze later, Pula stretches all four legs."],
+      explore: ["You follow tiny hoofprints to a new patch of wildflowers.", "Pula spots a bird at the waterhole and freezes in wonder.", "A fresh trail leads to an acacia grove. New sighting logged!", "You discover tracks near camp; Pula sniffs around excitedly."]
+    };
+    const feedback = replies[action][Math.floor(Math.random() * replies[action].length)];
+    const nextCount = recentActions + 1;
+    if (nextCount >= 4) {
+      const pause = 9000 + Math.floor(Math.random() * 9000);
+      setCooldownUntil(now + pause);
+      setCooldownLeft(Math.ceil(pause / 1000));
+      setRecentActions(0);
+      commit({ ...pet, visits: pet.visits + 1 }, `${feedback} Pula's had a busy little visit and is settling down for a quiet break.`, "sleepy");
+      return;
+    }
+    setRecentActions(nextCount);
+    if (action === "feed") commit({ ...pet, hunger: clamp(pet.hunger - (24 + Math.random() * 15)), trust: clamp(pet.trust + 2 + Math.random() * 3), visits: pet.visits + 1 }, feedback, ["happy", "eat", "bounce"][Math.floor(Math.random() * 3)]);
+    if (action === "water") commit({ ...pet, thirst: clamp(pet.thirst - (29 + Math.random() * 16)), trust: clamp(pet.trust + 1 + Math.random() * 3), visits: pet.visits + 1 }, feedback, ["drink", "happy", "shake"][Math.floor(Math.random() * 3)]);
+    if (action === "play") commit({ ...pet, energy: clamp(pet.energy - (12 + Math.random() * 12)), trust: clamp(pet.trust + 6 + Math.random() * 7), hunger: clamp(pet.hunger + 3 + Math.random() * 4), visits: pet.visits + 1 }, feedback, ["bounce", "play", "happy"][Math.floor(Math.random() * 3)]);
+    if (action === "rest") commit({ ...pet, energy: clamp(pet.energy + (22 + Math.random() * 18)), thirst: clamp(pet.thirst + 2), visits: pet.visits + 1 }, feedback, ["sleepy", "stretch", "idle"][Math.floor(Math.random() * 3)]);
+    if (action === "explore") commit({ ...pet, energy: clamp(pet.energy - (10 + Math.random() * 12)), hunger: clamp(pet.hunger + 3 + Math.random() * 4), sightings: pet.sightings + 1, worldDay: pet.worldDay + 1, visits: pet.visits + 1 }, feedback, ["curious", "bounce", "play"][Math.floor(Math.random() * 3)]);
   }
   const mood = !pet ? "Waking up" : pet.hunger > 75 || pet.thirst > 75 ? "Looking for a little care" : pet.energy < 30 ? "Ready for a nap" : pet.trust > 70 ? "Your bush buddy" : "Curious and watching";
   return <section className="safari-pet-section" aria-labelledby="safari-pet-title">
@@ -100,11 +153,11 @@ export default function SafariCompanion() {
       <div className="safari-pet-landscape" aria-label="Pula's bush camp">
         <span className="pet-sun" /><span className="pet-hill pet-hill-back" /><span className="pet-hill pet-hill-front" />
         <span className="pet-acacia pet-acacia-one">♣</span><span className="pet-acacia pet-acacia-two">♣</span>
-        <div className="pet-animal" role="img" aria-label={pet ? `${pet.name}, your safari companion` : "Safari companion"}><svg viewBox="0 0 120 150" aria-hidden="true"><ellipse cx="60" cy="137" rx="33" ry="7" fill="#163f30" opacity=".25"/><path d="M40 95 Q20 111 30 130 Q41 141 47 124 L51 108" fill="#b9844f" stroke="#6e472d" strokeWidth="3"/><ellipse cx="60" cy="102" rx="26" ry="35" fill="#d6ad77" stroke="#6e472d" strokeWidth="3"/><ellipse cx="60" cy="111" rx="13" ry="21" fill="#f1d7a9"/><circle cx="60" cy="53" r="29" fill="#d6ad77" stroke="#6e472d" strokeWidth="3"/><circle cx="38" cy="34" r="10" fill="#d6ad77" stroke="#6e472d" strokeWidth="3"/><circle cx="82" cy="34" r="10" fill="#d6ad77" stroke="#6e472d" strokeWidth="3"/><circle cx="49" cy="52" r="3.5" fill="#2c241b"/><circle cx="71" cy="52" r="3.5" fill="#2c241b"/><ellipse cx="60" cy="65" rx="8" ry="6" fill="#6e472d"/><path d="M53 71 Q60 77 67 71" fill="none" stroke="#6e472d" strokeWidth="2" strokeLinecap="round"/><path d="M39 86 Q60 77 81 86" fill="none" stroke="#f1d7a9" strokeWidth="4" strokeLinecap="round"/><path d="M44 130 L41 140 M76 130 L79 140" stroke="#6e472d" strokeWidth="5" strokeLinecap="round"/><circle cx="91" cy="90" r="5" fill="#e6c66c"/><path d="M86 90 L96 90 M91 85 L91 95" stroke="#6e472d" strokeWidth="1.5"/></svg></div>
+        <div className={`pet-animal pet-reaction-${reaction}`} role="img" aria-label={pet ? `${pet.name}, your safari companion` : "Safari companion"}><svg viewBox="0 0 120 150" aria-hidden="true"><ellipse cx="60" cy="137" rx="33" ry="7" fill="#163f30" opacity=".25"/><path d="M40 95 Q20 111 30 130 Q41 141 47 124 L51 108" fill="#b9844f" stroke="#6e472d" strokeWidth="3"/><ellipse cx="60" cy="102" rx="26" ry="35" fill="#d6ad77" stroke="#6e472d" strokeWidth="3"/><ellipse cx="60" cy="111" rx="13" ry="21" fill="#f1d7a9"/><circle cx="60" cy="53" r="29" fill="#d6ad77" stroke="#6e472d" strokeWidth="3"/><circle cx="38" cy="34" r="10" fill="#d6ad77" stroke="#6e472d" strokeWidth="3"/><circle cx="82" cy="34" r="10" fill="#d6ad77" stroke="#6e472d" strokeWidth="3"/><circle cx="49" cy="52" r="3.5" fill="#2c241b"/><circle cx="71" cy="52" r="3.5" fill="#2c241b"/><ellipse cx="60" cy="65" rx="8" ry="6" fill="#6e472d"/><path d="M53 71 Q60 77 67 71" fill="none" stroke="#6e472d" strokeWidth="2" strokeLinecap="round"/><path d="M39 86 Q60 77 81 86" fill="none" stroke="#f1d7a9" strokeWidth="4" strokeLinecap="round"/><path d="M44 130 L41 140 M76 130 L79 140" stroke="#6e472d" strokeWidth="5" strokeLinecap="round"/><circle cx="91" cy="90" r="5" fill="#e6c66c"/><path d="M86 90 L96 90 M91 85 L91 95" stroke="#6e472d" strokeWidth="1.5"/></svg></div>
         <span className="pet-camp-sign">BUSH CAMP · BW</span>
       </div>
       <div className="safari-pet-profile">
-        <div><p className="af-eyebrow">YOUR COMPANION</p><h3>{pet?.name ?? "Pula"}</h3><p>{mood}</p></div>
+        <div><p className="af-eyebrow">YOUR COMPANION</p><h3>{pet?.name ?? "Pula"}</h3><p>{cooldownLeft > 0 ? "Taking a little quiet time…" : mood}</p></div>
         <span className="safari-pet-heart" aria-hidden="true">♥</span>
       </div>
       {pet ? <div className="safari-pet-meters"><Meter label="Fullness" value={pet.hunger} inverse/><Meter label="Hydration" value={pet.thirst} inverse/><Meter label="Energy" value={pet.energy}/><Meter label="Trust" value={pet.trust}/></div> : <p className="safari-pet-loading">Preparing your companion&apos;s world…</p>}
@@ -119,7 +172,7 @@ export default function SafariCompanion() {
         <label htmlFor="safari-pet-name">Give your buddy a name</label><div><input id="safari-pet-name" maxLength={18} value={rename} onChange={e => setRename(e.target.value)} disabled={!pet}/><button type="submit" disabled={!pet || !rename.trim()}>Save name</button></div>
       </form>
       <div className="safari-pet-journal"><p className="af-eyebrow">WHILE YOU WERE AWAY</p>{pet?.journal.map(entry => <p key={entry.id}>{entry.message}</p>)}</div>
-      {message && <p className="safari-pet-feedback" role="status">{message}</p>}
+      {message && <p className="safari-pet-feedback" role="status">{message}</p>}{cooldownLeft > 0 && <p className="safari-pet-cooldown" role="status">Pula is resting. Back in {cooldownLeft}s.</p>}
       <p className="safari-pet-disclaimer">A small local-first companion prototype. Your save stays in this browser on this device; cloud sync is not enabled.</p>
     </div>
   </section>;
