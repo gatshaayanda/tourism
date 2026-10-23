@@ -1,6 +1,5 @@
-const CACHE_NAME = "africhiko-shell-v1";
+const CACHE_NAME = "botswana-safari-shell-v1";
 const APP_SHELL = ["/", "/services", "/enquiry", "/basket", "/account", "/offline", "/africhiko-icon.svg"];
-const PUBLIC_MEDIA = ["/videos/enter.mp4", "/videos/gear.mp4", "/videos/outside.mp4"];
 
 self.addEventListener("install", event => {
   event.waitUntil(
@@ -16,16 +15,6 @@ self.addEventListener("activate", event => {
       .then(keys => Promise.all(
         keys.filter(key => key !== CACHE_NAME).map(key => caches.delete(key)),
       ))
-      .then(() => {
-        // Pre-cache the small public images immediately. The video is attempted in
-        // the background so installation itself is not blocked by a large download.
-        return caches.open(CACHE_NAME).then(cache => {
-          void cache.addAll(PUBLIC_MEDIA).catch(() => {
-            // If the device is offline or the video download is interrupted,
-            // normal fetch handling below can retry when connectivity returns.
-          });
-        });
-      })
       .then(() => self.clients.claim()),
   );
 });
