@@ -43,6 +43,6 @@ npm install
 npm run dev
 ```
 
-Before QA, configure the `NEXT_PUBLIC_FIREBASE_*` environment variables for the tourism-5b2a0 Firebase project and verify the relevant Firestore and Storage rules. Run lint, type checks and a production build before considering the branch release-ready.
+Before QA, configure the `NEXT_PUBLIC_FIREBASE_*` variables for tourism-5b2a0, the server-only `ADMIN_PASSWORD` and `FIREBASE_ADMIN_KEY`, and the UploadThing token. Review Firestore rules for the current customer/admin workflows. Do not deploy Storage rules as part of this UI adaptation. Run lint, type checks and a production build before considering the branch release-ready.
 
 Never commit `.env.local`, service-account credentials or other private secrets.
