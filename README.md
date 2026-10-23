@@ -50,3 +50,14 @@ Before QA, configure the `NEXT_PUBLIC_FIREBASE_*` variables for tourism-5b2a0, t
 Before release, verify the latest `main` commit has a successful GitHub Actions run and a successful Vercel deployment; neither should be inferred from a push alone. In the deployed app, submit a guest trip request and confirm it appears in the admin inbox, update its status and notes, and reload to confirm persistence. Test experience, announcement and featured-listing CRUD, UploadThing media persistence, customer data isolation, admin-only writes, analytics events, mobile layout and the protected PWA installation flow. Publish and test the Firestore rules for `tourism-5b2a0`, and confirm the server-only Firebase Admin and UploadThing secrets are configured before expecting those integrations to work.
 
 Never commit `.env.local`, service-account credentials or other private secrets.
+
+
+## Safari Companion prototype
+The homepage includes a small Tamagotchi-inspired safari buddy named Pula. Visitors can feed, water, play, rest and explore with the companion, rename it, and return to a short journal describing changes while away. Needs and world day advance from elapsed time (bounded to seven days) and the save is stored locally in that browser/device. It is an early local-first prototype, not a cloud-synced or full 3D wildlife simulation.
+
+### Companion QA
+1. Use each care action and confirm the visible meters and journal update.
+2. Rename Pula, refresh, and confirm the name and state persist.
+3. Revisit after time has passed and confirm the return report and needs update once without double-counting on a second refresh.
+4. Test the controls on a narrow phone viewport.
+5. Separately verify the PWA install card's brand text, native prompt button and dismiss action; installation mechanics were not redesigned.

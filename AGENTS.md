@@ -47,3 +47,12 @@ Use Botswana Safari Experiences branding and the dedicated tourism project confi
 - The server route also requires `FIREBASE_ADMIN_KEY` service-account JSON to provision the verified admin role. Configure both as server-only environment variables before expecting admin access to work.
 - Featured safari and lodge examples live in `workFeed`; only published items are public. Guest interest signals are deduplicated per Firebase UID in `workInterests`, and customer identities must never be displayed publicly.
 - Preserve the approved PWA installation mechanism and UX during unrelated work.
+
+
+## Safari companion game — protected local-first slice
+- The homepage mini-game is the Safari Companion: a Tamagotchi-inspired, single-pet experience using a small deterministic elapsed-time simulation and a versioned local save.
+- Preserve the install experience independently. Do not change `src/app/pwa-register.tsx` event lifecycle, state transitions, install/dismiss actions, responsive layout or service-worker registration when making game changes. The current change only updates the install card's visible tourism brand text/mark and matching brand colours.
+- Companion actions are feed, water, play, rest and explore; the visitor can rename the pet. Hunger, thirst, energy, trust, sightings, world day and a small event journal persist in localStorage.
+- On return, advance time by elapsed timestamps with a seven-day cap. A normal absence must never kill or permanently damage the pet. The journal explains that time passed. Local-only storage is intentional; do not claim cloud sync or a full shared 3D ecology.
+- Keep simulation/persistence concerns separate from presentation. Do not add Firebase rules or connect pet saves to customer data. Keep the module lightweight and mobile-first.
+- QA gate: try every care action, rename, refresh, close/reopen later to verify bounded catch-up and return journal, test mobile layout, and confirm the install card still appears only after `beforeinstallprompt` and remains dismissible. A GitHub push is not device/offline verification.
