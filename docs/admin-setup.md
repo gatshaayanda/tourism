@@ -1,10 +1,10 @@
-# Africhiko admin setup
+# Facilities Management admin setup
 
-Africhiko uses Firebase Authentication and Cloud Firestore. Customer account creation is optional: an enquiry can be submitted as a guest, and the guest's anonymous Firebase identity can later be linked to an email/password credential.
+Facilities Management uses Firebase Authentication and Cloud Firestore. Customer account creation is optional: an enquiry can be submitted as a guest, and the guest's anonymous Firebase identity can later be linked to an email/password credential.
 
 ## One-time owner/staff setup
 
-1. Open the Africhiko Firebase project.
+1. Open the tourism-5b2a0 Firebase project.
 2. In Authentication → Sign-in method, enable Anonymous and Email/Password. Enable Google or Phone only if those providers are deliberately introduced into this app.
 3. Create the owner's or staff member's Firebase Authentication user.
 4. Copy that user's Auth UID.
@@ -20,7 +20,7 @@ Admin documents must be provisioned by a trusted project owner, not by the publi
 - admins: a user can read their own role document; clients cannot write role documents.
 - Other collections are denied unless an explicit rule is added for a real implemented feature.
 
-Deploy Firestore rules separately with firebase deploy --only firestore:rules after confirming the Firebase CLI is targeting the Africhiko project. Do not deploy Storage rules as part of this task.
+Deploy Firestore rules separately with firebase deploy --only firestore:rules after confirming the Firebase CLI is targeting tourism-5b2a0. Do not deploy Storage rules as part of this task.
 
 ## Customer account flow
 
