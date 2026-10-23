@@ -19,7 +19,7 @@ The account page supports email/password sign-in and account creation. When a gu
 
 - The install card is dismissible and calls the browser's native install prompt when the browser provides one.
 - On iPhone and iPad, installation is handled through Safari's Share menu and **Add to Home Screen**; Chromium's `beforeinstallprompt` event is not a universal iOS installation mechanism.
-- The service worker uses an Africhiko-specific cache namespace (preserved unchanged under the installation lock) to keep this app's cached shell separate from other projects.
+- The service worker uses a tourism-specific cache namespace to keep this app's cached shell separate from other projects.
 
 ## Operations
 
