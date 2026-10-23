@@ -1,15 +1,15 @@
-# Africhiko
+# Facilities Management Botswana
 
-Africhiko is a customer-first steel fabrication and welding enquiry PWA for Botswana.
+Facilities Management Botswana is a customer-first facilities maintenance PWA for commercial properties, offices, schools, retail sites and hospitality facilities in Botswana.
 
 ## Customer journey
 
-1. Browse the service catalogue and indicative starting prices.
-2. Add services to a single project request, or describe a custom project.
-3. Submit contact details, project location, dimensions, materials and notes for review.
+1. Browse available maintenance services and review service information.
+2. Add services to one service request, or describe a property maintenance issue.
+3. Submit contact details, property/site location, affected area, access requirements and notes for review.
 4. After submission, create a customer account to keep enquiries associated with the same Firebase identity, or continue as a guest.
 
-An enquiry is not a confirmed quotation or job. Africhiko reviews the details before discussing a quote.
+A service request is not a confirmed booking. The facilities team reviews the details before arranging work.
 
 ## Customer account
 
@@ -19,17 +19,17 @@ The account page supports email/password sign-in and account creation. When a gu
 
 - The install card is dismissible and calls the browser's native install prompt when the browser provides one.
 - On iPhone and iPad, installation is handled through Safari's Share menu and **Add to Home Screen**; Chromium's `beforeinstallprompt` event is not a universal iOS installation mechanism.
-- The service worker uses an Africhiko-specific cache namespace to keep this app's cached shell separate from other projects.
+- The service worker uses an Africhiko-specific cache namespace (preserved unchanged under the installation lock) to keep this app's cached shell separate from other projects.
 
 ## Operations
 
-The `/admin` route is the staff surface for reviewing enquiries and managing fabrication services. It depends on the Africhiko Firebase project configuration and the project's configured staff authorization.
+The `/admin` route is the staff surface for reviewing service requests, managing maintenance services, publishing landing-page updates and maintaining completed-work examples. It depends on the tourism Firebase project configuration and the project's configured staff authorization.
 
 ## Stack
 
 - Next.js 15 / React 19 / TypeScript
 - Firebase Authentication and Cloud Firestore
-- Firebase Storage for project reference uploads and service media
+- UploadThing for service-request attachments and admin media uploads
 - Progressive Web App support
 - Vercel Analytics and Speed Insights
 - Vercel deployment from GitHub `main`
@@ -43,6 +43,6 @@ npm install
 npm run dev
 ```
 
-Before QA, configure the `NEXT_PUBLIC_FIREBASE_*` environment variables for the Africhiko Firebase project and verify the relevant Firestore and Storage rules. Run lint, type checks and a production build before considering the branch release-ready.
+Before QA, configure the `NEXT_PUBLIC_FIREBASE_*` environment variables for the tourism-5b2a0 Firebase project and verify the relevant Firestore and Storage rules. Run lint, type checks and a production build before considering the branch release-ready.
 
 Never commit `.env.local`, service-account credentials or other private secrets.
