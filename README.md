@@ -45,4 +45,8 @@ npm run dev
 
 Before QA, configure the `NEXT_PUBLIC_FIREBASE_*` variables for tourism-5b2a0, the server-only `ADMIN_PASSWORD` and `FIREBASE_ADMIN_KEY`, and the UploadThing token. Review Firestore rules for the current customer/admin workflows. Do not deploy Storage rules as part of this UI adaptation. Run lint, type checks and a production build before considering the branch release-ready.
 
+## QA checkpoint
+
+Before release, verify the latest `main` commit has a successful GitHub Actions run and a successful Vercel deployment; neither should be inferred from a push alone. In the deployed app, submit a guest service request and confirm it appears in the admin inbox, update its status and notes, and reload to confirm persistence. Test service, announcement and completed-work CRUD, UploadThing media persistence, customer data isolation, admin-only writes, analytics events, mobile layout and the protected PWA installation flow. Publish and test the Firestore rules for `tourism-5b2a0`, and confirm the server-only Firebase Admin and UploadThing secrets are configured before expecting those integrations to work.
+
 Never commit `.env.local`, service-account credentials or other private secrets.
