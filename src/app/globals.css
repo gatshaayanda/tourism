@@ -194,3 +194,30 @@
 @keyframes pet-idle{0%,100%{transform:translateX(-50%) translateY(0)}50%{transform:translateX(-50%) translateY(-4px)}}
 @media(max-width:780px){.safari-pet-section{grid-template-columns:1fr;gap:20px;padding:30px 17px}.safari-pet-intro h2{font-size:2.5rem}.safari-pet-landscape{height:220px}.safari-pet-actions{grid-template-columns:repeat(3,minmax(0,1fr));padding-left:14px;padding-right:14px}.safari-pet-profile{padding-left:14px;padding-right:14px}.safari-pet-meters{padding-left:14px;padding-right:14px}.safari-pet-rename{padding-left:14px;padding-right:14px}.safari-pet-journal{padding-left:14px;padding-right:14px}}
 @media(prefers-reduced-motion:reduce){.pet-animal{animation:none}.safari-pet-track span{transition:none}}
+
+
+/* Companion reactions: small, varied body language with a quiet-time cooldown. */
+.pet-animal{transform-origin:50% 100%;transition:filter .2s ease;will-change:transform}
+.pet-reaction-happy{animation:pet-happy .7s ease-in-out 1}
+.pet-reaction-eat{animation:pet-eat .65s ease-in-out 2}
+.pet-reaction-drink{animation:pet-drink .8s ease-in-out 1}
+.pet-reaction-shake{animation:pet-shake .6s ease-in-out 1}
+.pet-reaction-bounce,.pet-reaction-play{animation:pet-bounce .8s cubic-bezier(.2,.8,.25,1.2) 1}
+.pet-reaction-sleepy{animation:pet-doze 2.2s ease-in-out infinite;filter:saturate(.78)}
+.pet-reaction-full{animation:pet-turn-away .55s ease-in-out 1}
+.pet-reaction-content{animation:pet-content .9s ease-in-out 1}
+.pet-reaction-stretch{animation:pet-stretch 1s ease-in-out 1}
+.pet-reaction-curious{animation:pet-curious .75s ease-in-out 1}
+.safari-pet-cooldown{margin:0;padding:0 20px 14px;color:#7b6441;font-size:12px;font-weight:750}
+@keyframes pet-happy{0%,100%{transform:translateX(-50%) translateY(0) rotate(0)}30%{transform:translateX(-50%) translateY(-13px) rotate(-5deg)}65%{transform:translateX(-50%) translateY(-5px) rotate(5deg)}}
+@keyframes pet-eat{0%,100%{transform:translateX(-50%) scaleY(1)}35%,70%{transform:translateX(-50%) scaleY(.91) rotate(-3deg)}}
+@keyframes pet-drink{0%,100%{transform:translateX(-50%) rotate(0)}35%{transform:translateX(-50%) rotate(8deg) translateY(4px)}70%{transform:translateX(-50%) rotate(-3deg) translateY(2px)}}
+@keyframes pet-shake{0%,100%{transform:translateX(-50%) rotate(0)}20%,60%{transform:translateX(-50%) rotate(-9deg)}40%,80%{transform:translateX(-50%) rotate(9deg)}}
+@keyframes pet-bounce{0%,100%{transform:translateX(-50%) translateY(0) scale(1)}35%{transform:translateX(-50%) translateY(-20px) scale(1.03)}65%{transform:translateX(-50%) translateY(2px) scale(.97)}}
+@keyframes pet-doze{0%,100%{transform:translateX(-50%) translateY(0) rotate(0)}50%{transform:translateX(-50%) translateY(5px) rotate(3deg)}}
+@keyframes pet-turn-away{0%,100%{transform:translateX(-50%) rotate(0)}50%{transform:translateX(-45%) rotate(12deg)}}
+@keyframes pet-content{0%,100%{transform:translateX(-50%) scale(1)}45%{transform:translateX(-50%) scale(1.05)}}
+@keyframes pet-stretch{0%,100%{transform:translateX(-50%) scaleY(1)}45%{transform:translateX(-50%) scaleY(1.12) translateY(-3px)}}
+@keyframes pet-curious{0%,100%{transform:translateX(-50%) rotate(0)}50%{transform:translateX(-50%) rotate(-8deg) translateY(-5px)}}
+@media(max-width:780px){.safari-pet-cooldown{padding-left:14px;padding-right:14px}}
+@media(prefers-reduced-motion:reduce){.pet-animal[class*="pet-reaction-"]{animation:none}}
