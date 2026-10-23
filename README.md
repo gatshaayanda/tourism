@@ -1,15 +1,15 @@
-# Facilities Management Botswana
+# Botswana Safari Experiences
 
-Facilities Management Botswana is a customer-first facilities maintenance PWA for commercial properties, offices, schools, retail sites and hospitality facilities in Botswana.
+Facilities Management Botswana is a customer-first safari experiences PWA for commercial properties, offices, schools, retail sites and hospitality facilities in Botswana.
 
 ## Customer journey
 
-1. Browse available maintenance services and review service information.
-2. Add services to one service request, or describe a property maintenance issue.
-3. Submit contact details, property/site location, affected area, access requirements and notes for review.
+1. Browse safari stays, guided game drives, mobile safaris and nature or cultural experiences.
+2. Add services to one trip request, or describe a property maintenance issue.
+3. Submit contact details, preferred destination, travel dates, group size, accommodation preferences and notes for review.
 4. After submission, create a customer account to keep enquiries associated with the same Firebase identity, or continue as a guest.
 
-A service request is not a confirmed booking. The facilities team reviews the details before arranging work.
+A trip request is not a confirmed booking. The facilities team reviews the details before arranging work.
 
 ## Customer account
 
@@ -23,7 +23,7 @@ The account page supports email/password sign-in and account creation. When a gu
 
 ## Operations
 
-The `/admin` route is the staff surface for reviewing service requests, managing maintenance services, publishing landing-page updates and maintaining completed-work examples. It depends on the tourism Firebase project configuration and the project's configured staff authorization.
+The `/admin` route is the staff surface for reviewing trip requests, managing maintenance services, publishing landing-page updates and maintaining completed-work examples. It depends on the tourism Firebase project configuration and the project's configured staff authorization.
 
 ## Stack
 
@@ -47,6 +47,6 @@ Before QA, configure the `NEXT_PUBLIC_FIREBASE_*` variables for tourism-5b2a0, t
 
 ## QA checkpoint
 
-Before release, verify the latest `main` commit has a successful GitHub Actions run and a successful Vercel deployment; neither should be inferred from a push alone. In the deployed app, submit a guest service request and confirm it appears in the admin inbox, update its status and notes, and reload to confirm persistence. Test service, announcement and completed-work CRUD, UploadThing media persistence, customer data isolation, admin-only writes, analytics events, mobile layout and the protected PWA installation flow. Publish and test the Firestore rules for `tourism-5b2a0`, and confirm the server-only Firebase Admin and UploadThing secrets are configured before expecting those integrations to work.
+Before release, verify the latest `main` commit has a successful GitHub Actions run and a successful Vercel deployment; neither should be inferred from a push alone. In the deployed app, submit a guest trip request and confirm it appears in the admin inbox, update its status and notes, and reload to confirm persistence. Test experience, announcement and featured-listing CRUD, UploadThing media persistence, customer data isolation, admin-only writes, analytics events, mobile layout and the protected PWA installation flow. Publish and test the Firestore rules for `tourism-5b2a0`, and confirm the server-only Firebase Admin and UploadThing secrets are configured before expecting those integrations to work.
 
 Never commit `.env.local`, service-account credentials or other private secrets.

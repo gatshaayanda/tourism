@@ -1,17 +1,17 @@
-# Facilities Management — Project Operating Contract
+# Botswana Safari Experiences — Project Operating Contract
 
 ## Product and source of truth
-Facilities is a customer-first facilities management and maintenance PWA for Botswana commercial properties, offices, schools, retail sites and hospitality facilities. The product owner is the final reviewer; the implementer must inspect actual repository state before making changes. GitHub, this file, and the project documentation are the source of truth. Do not carry instructions, identity, Firebase configuration, contacts, or business data over from another project.
+Botswana Safari Experiences is a premium, customer-first safari discovery and enquiry PWA connecting guests with independent safari operators, boutique lodges, luxury camps and mobile safari companies across Botswana. The product owner is the final reviewer; the implementer must inspect actual repository state before making changes. GitHub, this file, and the project documentation are the source of truth. Do not carry instructions, identity, Firebase configuration, contacts, or business data over from another project.
 
-## Core customer journey
-1. Browse the maintenance service catalogue or describe a site issue.
-2. Build and review a service request.
-3. Submit name, phone, optional email, property/site location, site type, affected area, access requirements, quantity, selected services and notes.
-4. Receive a truthful confirmation only after Firestore confirms the write.
+## Core guest journey
+1. Browse safari stays, guided game drives, mobile safaris and nature or cultural experiences.
+2. Add experiences to a trip request and review the selected options.
+3. Submit name, phone, optional email, preferred destination or region, travel dates, group size, selected experiences, accommodation preferences and notes.
+4. Receive a truthful confirmation only after Firestore confirms the trip enquiry was saved.
 5. Optionally create an account after submission to keep future enquiries together.
-6. The facilities team reviews the request before any visit or maintenance work is confirmed.
+6. The tourism operator reviews the enquiry and confirms availability, pricing and booking details before any trip is considered confirmed.
 
-Do not force account creation before an enquiry. Do not describe an enquiry as a confirmed quote, order, or accepted job. If a write fails, preserve the entered details and say the enquiry was not confirmed as saved.
+Do not force account creation before an enquiry. Do not describe an enquiry as a confirmed booking or paid reservation. If a write fails, preserve the entered details and say the enquiry was not confirmed as saved.
 
 ## Firebase and data security
 - Use the dedicated tourism Firebase project (tourism-5b2a0) and NEXT_PUBLIC_FIREBASE_* environment variables.
@@ -39,11 +39,11 @@ The approved installation experience from Africhiko remains the permanent refere
 - For each checkpoint report repository, branch, commit, changed files, verification, configuration still needed, exact QA steps and deployment status.
 
 ## Project identity
-Use Facilities branding and the dedicated tourism project configuration in app-facing text and documentation. Search for and correct inherited identity leaks rather than copying another project's details.
+Use Botswana Safari Experiences branding and the dedicated tourism project configuration in app-facing text and documentation. Search for and correct inherited identity leaks rather than copying another project's details.
 
 
 ## Admin access and work feed
 - The admin page uses one access-word field. The word is verified only on the server using `ADMIN_PASSWORD`; never hardcode it into client code or expose it in a `NEXT_PUBLIC_*` variable.
 - The server route also requires `FIREBASE_ADMIN_KEY` service-account JSON to provision the verified admin role. Configure both as server-only environment variables before expecting admin access to work.
-- Completed-work examples live in `workFeed`; only published items are public. Interest signals are deduplicated per Firebase UID in `workInterests`, and customer identities must never be displayed publicly.
+- Featured safari and lodge examples live in `workFeed`; only published items are public. Guest interest signals are deduplicated per Firebase UID in `workInterests`, and customer identities must never be displayed publicly.
 - Preserve the approved PWA installation mechanism and UX during unrelated work.
