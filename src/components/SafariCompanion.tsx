@@ -92,7 +92,7 @@ export default function SafariCompanion() {
     <div className="safari-pet-intro">
       <p className="af-eyebrow">A LITTLE WORLD THAT KEEPS GOING</p>
       <h2 id="safari-pet-title">Meet your safari <em>buddy.</em></h2>
-      <p>Pop in for a moment or come back tomorrow. Pula's little camp keeps changing while you're away, and you can help shape what happens next.</p>
+      <p>Pop in for a moment or come back tomorrow. Pula&apos;s little camp keeps changing while you&apos;re away, and you can help shape what happens next.</p>
       <div className="safari-pet-facts"><span>WORLD DAY <b>{pet?.worldDay ?? "—"}</b></span><span>WILDLIFE SIGHTINGS <b>{pet?.sightings ?? "—"}</b></span><span>VISITS <b>{pet?.visits ?? "—"}</b></span></div>
       <p className="safari-pet-note">Saved on this device · time advances between visits · no account required.</p>
     </div>
@@ -107,7 +107,7 @@ export default function SafariCompanion() {
         <div><p className="af-eyebrow">YOUR COMPANION</p><h3>{pet?.name ?? "Pula"}</h3><p>{mood}</p></div>
         <span className="safari-pet-heart" aria-hidden="true">♥</span>
       </div>
-      {pet ? <div className="safari-pet-meters"><Meter label="Fullness" value={pet.hunger} inverse/><Meter label="Hydration" value={pet.thirst} inverse/><Meter label="Energy" value={pet.energy}/><Meter label="Trust" value={pet.trust}/></div> : <p className="safari-pet-loading">Preparing your companion's world…</p>}
+      {pet ? <div className="safari-pet-meters"><Meter label="Fullness" value={pet.hunger} inverse/><Meter label="Hydration" value={pet.thirst} inverse/><Meter label="Energy" value={pet.energy}/><Meter label="Trust" value={pet.trust}/></div> : <p className="safari-pet-loading">Preparing your companion&apos;s world…</p>}
       <div className="safari-pet-actions">
         <button type="button" disabled={!pet} onClick={() => act("feed")}>🍃 Feed</button>
         <button type="button" disabled={!pet} onClick={() => act("water")}>💧 Water</button>
