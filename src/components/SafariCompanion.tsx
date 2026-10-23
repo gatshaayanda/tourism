@@ -123,22 +123,23 @@ export default function SafariCompanion() {
       rest: ["Pula curls up in the shade and lets out a slow sigh.", "A peaceful pause. Pula's ears twitch at sounds in the grass.", "Pula settles into the warm sand and slowly recharges.", "A little doze later, Pula stretches all four legs."],
       explore: ["You follow tiny hoofprints to a new patch of wildflowers.", "Pula spots a bird at the waterhole and freezes in wonder.", "A fresh trail leads to an acacia grove. New sighting logged!", "You discover tracks near camp; Pula sniffs around excitedly."]
     };
-    const feedback = replies[action][Math.floor(Math.random() * replies[action].length)];
+    let feedback = replies[action][Math.floor(Math.random() * replies[action].length)];
     const nextCount = recentActions + 1;
-    if (nextCount >= 4) {
+    const gettingTired = nextCount >= 4;
+    if (gettingTired) {
       const pause = 9000 + Math.floor(Math.random() * 9000);
       setCooldownUntil(now + pause);
       setCooldownLeft(Math.ceil(pause / 1000));
       setRecentActions(0);
-      commit({ ...pet, visits: pet.visits + 1 }, `${feedback} Pula's had a busy little visit and is settling down for a quiet break.`, "sleepy");
-      return;
+      feedback += " Pula's had a busy little visit and is settling down for a quiet break.";
+    } else {
+      setRecentActions(nextCount);
     }
-    setRecentActions(nextCount);
-    if (action === "feed") commit({ ...pet, hunger: clamp(pet.hunger - (24 + Math.random() * 15)), trust: clamp(pet.trust + 2 + Math.random() * 3), visits: pet.visits + 1 }, feedback, ["happy", "eat", "bounce"][Math.floor(Math.random() * 3)]);
-    if (action === "water") commit({ ...pet, thirst: clamp(pet.thirst - (29 + Math.random() * 16)), trust: clamp(pet.trust + 1 + Math.random() * 3), visits: pet.visits + 1 }, feedback, ["drink", "happy", "shake"][Math.floor(Math.random() * 3)]);
-    if (action === "play") commit({ ...pet, energy: clamp(pet.energy - (12 + Math.random() * 12)), trust: clamp(pet.trust + 6 + Math.random() * 7), hunger: clamp(pet.hunger + 3 + Math.random() * 4), visits: pet.visits + 1 }, feedback, ["bounce", "play", "happy"][Math.floor(Math.random() * 3)]);
-    if (action === "rest") commit({ ...pet, energy: clamp(pet.energy + (22 + Math.random() * 18)), thirst: clamp(pet.thirst + 2), visits: pet.visits + 1 }, feedback, ["sleepy", "stretch", "idle"][Math.floor(Math.random() * 3)]);
-    if (action === "explore") commit({ ...pet, energy: clamp(pet.energy - (10 + Math.random() * 12)), hunger: clamp(pet.hunger + 3 + Math.random() * 4), sightings: pet.sightings + 1, worldDay: pet.worldDay + 1, visits: pet.visits + 1 }, feedback, ["curious", "bounce", "play"][Math.floor(Math.random() * 3)]);
+    if (action === "feed") commit({ ...pet, hunger: clamp(pet.hunger - (24 + Math.random() * 15)), trust: clamp(pet.trust + 2 + Math.random() * 3), visits: pet.visits + 1 }, feedback, gettingTired ? "sleepy" : ["happy", "eat", "bounce"][Math.floor(Math.random() * 3)]);
+    if (action === "water") commit({ ...pet, thirst: clamp(pet.thirst - (29 + Math.random() * 16)), trust: clamp(pet.trust + 1 + Math.random() * 3), visits: pet.visits + 1 }, feedback, gettingTired ? "sleepy" : ["drink", "happy", "shake"][Math.floor(Math.random() * 3)]);
+    if (action === "play") commit({ ...pet, energy: clamp(pet.energy - (12 + Math.random() * 12)), trust: clamp(pet.trust + 6 + Math.random() * 7), hunger: clamp(pet.hunger + 3 + Math.random() * 4), visits: pet.visits + 1 }, feedback, gettingTired ? "sleepy" : ["bounce", "play", "happy"][Math.floor(Math.random() * 3)]);
+    if (action === "rest") commit({ ...pet, energy: clamp(pet.energy + (22 + Math.random() * 18)), thirst: clamp(pet.thirst + 2), visits: pet.visits + 1 }, feedback, gettingTired ? "sleepy" : ["sleepy", "stretch", "idle"][Math.floor(Math.random() * 3)]);
+    if (action === "explore") commit({ ...pet, energy: clamp(pet.energy - (10 + Math.random() * 12)), hunger: clamp(pet.hunger + 3 + Math.random() * 4), sightings: pet.sightings + 1, worldDay: pet.worldDay + 1, visits: pet.visits + 1 }, feedback, gettingTired ? "sleepy" : ["curious", "bounce", "play"][Math.floor(Math.random() * 3)]);
   }
   const mood = !pet ? "Waking up" : pet.hunger > 75 || pet.thirst > 75 ? "Looking for a little care" : pet.energy < 30 ? "Ready for a nap" : pet.trust > 70 ? "Your bush buddy" : "Curious and watching";
   return <section className="safari-pet-section" aria-labelledby="safari-pet-title">
