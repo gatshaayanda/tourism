@@ -24,7 +24,7 @@ Do not force account creation before an enquiry. Do not describe an enquiry as a
 - Never commit .env.local, production credentials, service-account JSON or secrets.
 
 ## Media and integrations
-Inspect the actual implementation and environment before claiming an integration is present. The current enquiry form imports Firebase Storage for reference attachments; no UploadThing route/package was present at the last repository inspection. Do not claim UploadThing is active until the code and configuration are implemented and verified. Do not change Firebase Storage rules unless explicitly authorized; this project's current request is focused on Firestore and the customer enquiry journey.
+UploadThing is used for customer reference attachments and admin-managed landing-page media. Verify the UploadThing token and route configuration before claiming uploads work. Do not move media to Firebase Storage or change Firebase Storage rules as an assumed requirement. Keep Firestore rules aligned with the existing authenticated customer/admin data model.
 
 ## PWA installation — protected infrastructure
 The approved installation experience from Africhiko remains the permanent reference; preserve its runtime behavior in this project. Do not redesign, rewrite, refactor, replace, remove or alter the install mechanism, beforeinstallprompt lifecycle, event listeners, state, dismissible branded card, responsive positioning, manifest, icons or service-worker behaviour unless the product owner explicitly authorizes that specific installation change. For unrelated work, leave installation files untouched. For iOS Safari, describe Share → Add to Home Screen accurately; do not invent support for Chromium's beforeinstallprompt on iOS.
