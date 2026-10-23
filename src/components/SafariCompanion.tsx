@@ -50,7 +50,6 @@ function resumeWorld(state: CompanionState, now: number): CompanionState {
     journal: [{ id: now, message }, ...state.journal].slice(0, 5)
   };
 }
-function meterLabel(value: number) { return value >= 75 ? "Doing well" : value >= 45 ? "Could use a little care" : "Needs attention"; }
 function Meter({ label, value, inverse = false }: { label: string; value: number; inverse?: boolean }) {
   const shown = inverse ? 100 - value : value;
   return <div className="safari-pet-meter"><div><span>{label}</span><strong>{shown}%</strong></div><div className="safari-pet-track"><span style={{ width: `${shown}%` }} /></div></div>;
@@ -82,14 +81,11 @@ export default function SafariCompanion() {
   }
   function act(action: "feed" | "water" | "play" | "rest" | "explore") {
     if (!pet) return;
-    const now = Date.now();
     if (action === "feed") commit({ ...pet, hunger: clamp(pet.hunger - 32), trust: clamp(pet.trust + 3), visits: pet.visits + 1 }, "Pula enjoyed a handful of safari-safe treats and is feeling cared for.");
     if (action === "water") commit({ ...pet, thirst: clamp(pet.thirst - 38), trust: clamp(pet.trust + 2), visits: pet.visits + 1 }, "Fresh water! Pula had a good drink at camp.");
     if (action === "play") commit({ ...pet, energy: clamp(pet.energy - 16), trust: clamp(pet.trust + 10), hunger: clamp(pet.hunger + 5), visits: pet.visits + 1 }, "You played a little tracking game together. Pula trusts you a bit more.");
     if (action === "rest") commit({ ...pet, energy: clamp(pet.energy + 28), thirst: clamp(pet.thirst + 3), visits: pet.visits + 1 }, "A quiet break in the shade. Pula is rested and ready to explore again.");
     if (action === "explore") commit({ ...pet, energy: clamp(pet.energy - 12), hunger: clamp(pet.hunger + 4), sightings: pet.sightings + 1, worldDay: pet.worldDay + 1, visits: pet.visits + 1 }, "You followed fresh tracks together and added a new wildlife sighting to the camp journal.");
-    setMessage("");
-    void now;
   }
   const mood = !pet ? "Waking up" : pet.hunger > 75 || pet.thirst > 75 ? "Looking for a little care" : pet.energy < 30 ? "Ready for a nap" : pet.trust > 70 ? "Your bush buddy" : "Curious and watching";
   return <section className="safari-pet-section" aria-labelledby="safari-pet-title">
@@ -111,7 +107,7 @@ export default function SafariCompanion() {
         <div><p className="af-eyebrow">YOUR COMPANION</p><h3>{pet?.name ?? "Pula"}</h3><p>{mood}</p></div>
         <span className="safari-pet-heart" aria-hidden="true">♥</span>
       </div>
-      {pet ? <div className="safari-pet-meters"><Meter label="Hunger" value={pet.hunger} inverse/><Meter label="Thirst" value={pet.thirst} inverse/><Meter label="Energy" value={pet.energy}/><Meter label="Trust" value={pet.trust}/></div> : <p className="safari-pet-loading">Preparing your companion's world…</p>}
+      {pet ? <div className="safari-pet-meters"><Meter label="Fullness" value={pet.hunger} inverse/><Meter label="Hydration" value={pet.thirst} inverse/><Meter label="Energy" value={pet.energy}/><Meter label="Trust" value={pet.trust}/></div> : <p className="safari-pet-loading">Preparing your companion's world…</p>}
       <div className="safari-pet-actions">
         <button type="button" disabled={!pet} onClick={() => act("feed")}>🍃 Feed</button>
         <button type="button" disabled={!pet} onClick={() => act("water")}>💧 Water</button>
